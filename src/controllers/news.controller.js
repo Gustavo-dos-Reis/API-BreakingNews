@@ -1,12 +1,12 @@
 import { createService, findAllService } from "../services/news.service.js"
 
-const create = async (res, req) => {
+const create = async (req, res) => {
    try{ 
         const { title, text, banner } = req.body;
 
         if(!title || !text || !banner){
             res.status(400).send({
-                message: "Submit all fields for refistration",
+                message: "Submit all fields for registration",
             });
         }
 
@@ -14,12 +14,12 @@ const create = async (res, req) => {
             title,
             text,
             banner,
-            id: "objectidfake1",
+            user: { _id: "646e6abbddd20eba60bff736" },
         });
 
         res.send(201);
-    }catch (error){
-        res.status(500).send({message: err.message})
+    } catch (err) {
+      res.status(500).send(err.message)
     }
 };
 
@@ -28,4 +28,4 @@ const findAll = (res,req) => {
     res.send(news);
 };
 
-export default { create, findAll};
+export  { create, findAll};
