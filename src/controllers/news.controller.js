@@ -14,7 +14,7 @@ const create = async (req, res) => {
             title,
             text,
             banner,
-            user: { _id: "646e6abbddd20eba60bff736" },
+            user: req.userId,
         });
 
         res.send(201);
@@ -23,8 +23,14 @@ const create = async (req, res) => {
     }
 };
 
-const findAll = (res,req) => {
-    const news = [];
+const findAll = async (req,res) => {
+    const news = await findAllService();
+
+    if (news.length === 0) {
+        return res.status(400).send({ 
+            message: "There are no registered news",
+        })
+    }
     res.send(news);
 };
 
