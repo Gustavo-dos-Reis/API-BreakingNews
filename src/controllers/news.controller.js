@@ -2,10 +2,11 @@ import {
     createService, 
     findAllService, 
     countNews,
+    findByIdService,
     topNewsService
 } from "../services/news.service.js"
 
-const create = async (req, res) => {
+export const create = async (req, res) => {
    try{ 
         const { title, text, banner } = req.body;
 
@@ -28,7 +29,7 @@ const create = async (req, res) => {
     }
 };
 
-const findAll = async (req,res) => {
+export const findAll = async (req,res) => {
     try {
         let { limit, offset } = req.query;
 
@@ -85,7 +86,7 @@ const findAll = async (req,res) => {
     
 };
 
-const topNews = async (req,res) =>  {
+export const topNews = async (req,res) =>  {
     try{
         const news = await topNewsService();
 
@@ -109,4 +110,27 @@ const topNews = async (req,res) =>  {
     } 
 };
 
-export  { create, findAll, topNews };
+export const findById = async (req,res) => {
+    try{
+        const { id } = req.params;
+
+        const news = await findByIdService(id)
+
+        return res.send({
+            news:{
+                id: news._id,
+                title: news.title,
+                text: news.text,
+                banner: news.banner,
+                likes: news.likes,
+                comments: news.comments,
+                name: news.user.name,
+                username: news.user.name,
+                userAvatar: news.user.avatar
+            }
+        })
+    } catch (err) {
+        res.status(500).send(err.message);
+      } 
+};
+
