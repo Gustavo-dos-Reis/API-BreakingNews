@@ -1,12 +1,17 @@
 import { Router } from 'express';
 const route = Router();
 
-import { create, findAll, topNews, findById } from '../controllers/news.controller.js';
+import { create, findAll, topNews, findById, searchByTitle, byUser } from '../controllers/news.controller.js';
 import { authMiddleware } from '../middlerwares/auth.middlewares.js';  
 
 route.post("/", authMiddleware, create);
 route.get("/", findAll);
 route.get("/top", topNews);
-route.get("/:id", findById)
+route.get("/search", searchByTitle);
+route.get("/byUser", authMiddleware, byUser )
+
+
+route.get("/:id", authMiddleware, findById)
+
 
 export default route;
