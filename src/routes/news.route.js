@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const route = Router();
 
-import { create, findAll, topNews, findById, searchByTitle, byUser } from '../controllers/news.controller.js';
+import { create, findAll, topNews, findById, searchByTitle, byUser, update } from '../controllers/news.controller.js';
 import { authMiddleware } from '../middlerwares/auth.middlewares.js';  
 
 route.post("/", authMiddleware, create);
@@ -12,6 +12,7 @@ route.get("/byUser", authMiddleware, byUser )
 
 
 route.get("/:id", authMiddleware, findById)
+route.patch("/:id", authMiddleware, update)
 
 
 export default route;

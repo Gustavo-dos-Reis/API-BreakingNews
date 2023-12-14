@@ -5,7 +5,8 @@ import {
     findByIdService,
     topNewsService,
     searchByTitleService,
-    byUserService
+    byUserService,
+    updateService
 } from "../services/news.service.js"
 
 export const create = async (req, res) => {
@@ -166,7 +167,6 @@ export const searchByTitle = async (req,res) => {
       } 
 }
 
-
 export const byUser = async (req, res) => {
     try{
         const  id = req.userId;
@@ -188,4 +188,32 @@ export const byUser = async (req, res) => {
     } catch (err) {
         res.status(500).send(err.message);
       } 
+}
+
+export const update = async (req, res) => {
+
+    try { 
+        const { title, text, banner } = req.body;
+        const { id } = req.params;
+
+        if(!title && !text && !banner){
+            res.status(400).send({
+                message: "Submit all fields for registration",
+            });
+        }
+
+        const news = await findByIdService(id);
+
+        if (news.user._id != req.userId ){
+            return res.status(400).send({
+                message: "You didn't update this post",
+            });
+        }
+
+        await updateService(id,title, text, banner);
+
+        return res.send({ message: "Post sucessfully update!" });
+    } catch (err) {
+        res.status(500).send(err.message);
+      }
 }

@@ -18,3 +18,10 @@ export const searchByTitleService = (title) =>
         .populate("user");
 
 export const byUserService = (id) => News.find({user: id})
+
+export const updateService = (id, title, text, banner) => News.findOne(
+    { _id: id },
+    { title, text, banner },
+    { 
+        rawResult: true 
+    })
