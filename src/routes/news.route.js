@@ -9,7 +9,8 @@ import {
     searchByTitle,
     byUser,
     update,
-    erase 
+    erase,
+    likeNews 
 } from '../controllers/news.controller.js';
 
 import { authMiddleware } from '../middlerwares/auth.middlewares.js';  
@@ -22,7 +23,7 @@ route.get("/byUser", authMiddleware, byUser );
 route.get("/:id", authMiddleware, findById);
 route.patch("/:id", authMiddleware, update);
 route.delete("/:id", authMiddleware, erase);
-
+route.patch("/like/:id", authMiddleware, likeNews )
 
 
 export default route;
