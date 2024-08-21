@@ -1,49 +1,32 @@
-import dotenv from "dotenv";
-import userService from '../services/user.service.js';
-import jwt from 'jsonwebtoken'
+import "dotenv/config";
+import jwt from "jsonwebtoken";
+import userRepositories from "../repositories/user.repositories.js";
 
-dotenv.config();
+function authMiddleware(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader)
+    return res.status(401).send({ message: "The token was not informed!" });
 
-export const authMiddleware = (req, res, next) => {
-    
-    try{
-        const { authorization } = req.headers;
-    
-        if (!authorization) {
-            return res.send(401);  
-        }
-    
-        const parts = authorization.split(" ");
+  const parts = authHeader.split(" "); /* ["Bearer", "asdasdasdadsadasd"] */
+  if (parts.length !== 2)
+    return res.status(401).send({ message: "Invalid token!" });
 
-        if (parts.length !== 2) {
-            return res.send(401)
-        }
+  const [scheme, token] = parts;
 
-        const [schema, token] = parts; 
+  if (!/^Bearer$/i.test(scheme))
+    return res.status(401).send({ message: "Malformatted Token!" });
 
-        if (schema !== "Bearer") {
-            return res.send(401);
-        }
-    
-        jwt.verify(token, process.env.SECRET_JWT, async(error, decoded) => {
-            if(error){
-                return res.status(401).send({message: "Token invalid!"});
-            };
-            console.log(decoded);
+  jwt.verify(token, process.env.SECRET, async (err, decoded) => {
+    if (err) return res.status(401).send({ message: "Invalid token!" });
 
-        const user = await userService.findByIdService(decoded.id)
+    const user = await userRepositories.findByIdUserRepository(decoded.id);
+    if (!user || !user.id)
+      return res.status(401).send({ message: "Invalid token!" });
 
-            if ( !user || !user.id){
-                return res.status(401).sen({message:"TOlken invalid!"});
-            }
+    req.userId = user.id;
 
-            req.userId = user.id;
-
-            return next();
-        });
-
-       
-    } catch (err) {
-      res.status(500).send(err.message)
-    }  
+    return next();
+  });
 }
+
+export default authMiddleware;
