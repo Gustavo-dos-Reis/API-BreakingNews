@@ -1,6 +1,6 @@
 import userController from "../controllers/user.controller.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
-import { validId } from "../middlewares/global.middleware.js";
+import authMiddleware from "../middlerwares/auth.middlewares.js";
+import { validId } from "../middlerwares/global.middlewares.js";
 
 import { Router } from "express";
 
@@ -15,4 +15,4 @@ userRouter.use(validId);
 userRouter.get("/findById/:id?", userController.findUserByIdController);
 userRouter.patch("/update/:id", userController.updateUserController);
 
-export default userRouter;
+export default userRouter; 

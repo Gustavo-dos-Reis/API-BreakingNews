@@ -1,6 +1,6 @@
 import postController from "../controllers/post.controller.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
-import { validId } from "../middlewares/global.middleware.js";
+import authMiddleware from "../middlerwares/auth.middlewares.js";
+import { validId } from "../middlerwares/global.middlewares.js";
 
 import { Router } from "express";
 
