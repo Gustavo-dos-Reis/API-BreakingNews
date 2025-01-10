@@ -35,7 +35,7 @@ O projeto está dividido em módulos para garantir uma estrutura limpa e organiz
   - `auth.route.js`
   - `post.route.js`
   - `user.route.js`
-  - `swagger.route.js` (documentação da API)
+  - `swagger.route.cjs` (documentação da API)
 
 - **database/**: Arquivo de conexão com o MongoDB.
   - `database.js`
